@@ -1,0 +1,15 @@
+API/.idea
+API/API/bin
+
+
+API/API/obj
+API/API/build
+Worker/Worker/.idea
+Worker/Worker/Worker/bin
+Worker/Worker/Worker/obj
+Worker/.DS_Store
+Worker/Worker/.DS_Store
+frontend/.idea
+frontend/frontend/bin
+frontend/frontend/obj
+.DS_Store

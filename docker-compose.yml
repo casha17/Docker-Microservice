@@ -1,0 +1,52 @@
+version: "3.1"
+
+services:
+  rabbitmq: # login guest:guest
+    image: rabbitmq:3-management
+    build:
+      context: ./rabbit
+      dockerfile: Dockerfile
+    ports:
+      - "4369:4369"
+      - "5671:5671"
+      - "5672:5672"
+      - "25672:25672"
+      - "15671:15671"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  proxy:
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    ports:
+      - 80:80
+      - 8080
+      - 3333:3333
+    restart: always
+  frontend:
+    build:
+      context: ./frontend/frontend/
+      dockerfile: Dockerfile
+    expose:
+      - 5002
+    restart: always
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+  worker:
+    build:
+      context: ./Worker/Worker/Worker/
+      dockerfile: Dockerfile
+    expose:
+      - 5001
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+    restart: always
